@@ -1,16 +1,23 @@
 import React from 'react';
 
 const BrowsingHistory = ({ history, products, onClearHistory }) => {
-  // TODO: Implement a browsing history display
-  // This component should:
-  // - Show products the user has clicked on
-  // - Allow clearing the browsing history
-  
+  const viewedProducts = products.filter(p => history.includes(p.id));
+
   return (
-    <div className="history-container">
+    <div>
       <h3>Your Browsing History</h3>
-      {/* Implement browsing history display here */}
-      <p>Implement browsing history display here</p>
+      {viewedProducts.length === 0 ? (
+        <p>No products viewed yet.</p>
+      ) : (
+        <>
+          <ul>
+            {viewedProducts.map(p => (
+              <li key={p.id}>{p.name} (${p.price})</li>
+            ))}
+          </ul>
+          <button onClick={onClearHistory}>Clear History</button>
+        </>
+      )}
     </div>
   );
 };

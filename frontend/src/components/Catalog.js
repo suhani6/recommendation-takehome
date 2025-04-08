@@ -1,14 +1,21 @@
 import React from 'react';
 
 const Catalog = ({ products, onProductClick, browsingHistory }) => {
-  // TODO: Implement a product catalog display
-  // This component should display a grid of products from the catalog
-  // Each product should be clickable to add to browsing history
-  
+  if (!products.length) return <p>No products available.</p>;
+
   return (
-    <div className="catalog-container">
-      {/* Implement product catalog display here */}
-      <p>Implement product catalog display here</p>
+    <div className="catalog-grid">
+      {products.map(product => (
+        <div
+          key={product.id}
+          className={`product-card ${browsingHistory.includes(product.id) ? 'viewed' : ''}`}
+          onClick={() => onProductClick(product.id)}
+        >
+          <h4>{product.name}</h4>
+          <p>{product.brand}</p>
+          <p>${product.price}</p>
+        </div>
+      ))}
     </div>
   );
 };
