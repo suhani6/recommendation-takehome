@@ -1,211 +1,181 @@
-# i95dev AI Engineering Intern - Take-Home Assignment
-## AI-Powered Product Recommendation Engine
+# 🛍️ AI-Powered Product Recommendation System
 
-### Overview
+This is a full-stack AI-powered product recommendation engine built for an eCommerce context. It uses OpenAI's GPT-3.5-turbo to generate personalized product suggestions based on user preferences and browsing behavior.
 
-Welcome to the i95dev AI Engineering Intern take-home assignment! This project is designed to evaluate your skills in working with LLMs, prompt engineering, and full-stack development in an eCommerce context.
+---
 
-Your task is to build a simplified product recommendation system that leverages LLMs to generate personalized recommendations based on user preferences and browsing history. This system should demonstrate your ability to effectively engineer prompts, build APIs, and create a functional frontend interface.
+## 📦 Features
 
-### Project Requirements
+- 🧠 **LLM-Powered Recommendations** using GPT-3.5
+- 🎯 User-controlled **preferences** (price range, categories, brands)
+- 🛒 Simulated **browsing history** (via product clicks)
+- 🤖 AI-generated **explanations + confidence scores**
+- 🧩 Built with **FastAPI** (backend) and **React** (frontend)
+- 🌐 Fully integrated, responsive, clean UI
 
-#### Backend (Python)
-- Develop a REST API using Flask that interfaces with an LLM (OpenAI GPT-3.5-turbo or similar)
-- Implement prompt engineering to optimize product recommendations based on user preferences
-- Create endpoints for:
-  - Accepting user preference data
-  - Processing browsing history
-  - Returning personalized product recommendations with explanations
+---
 
-#### Frontend (React)
-- Build a clean interface showing the product catalog
-- Implement a user preference form to capture interests (e.g., preferences for categories, price ranges, styles)
-- Create a browsing history simulation (users can click on products to add them to history)
-- Display personalized recommendations with reasoning from the LLM
+## 🧰 Tech Stack
 
-### Starter Kit
+| Layer    | Tools                |
+|----------|----------------------|
+| LLM API  | OpenAI GPT-3.5-turbo |
+| Backend  | FastAPI, Python      |
+| Frontend | React.js             |
+| Styling  | CSS Grid & Flexbox   |
+| Deployment | Run locally        |
 
-We've provided a starter kit to help you focus on the core technical challenges rather than boilerplate setup. The kit includes:
+---
 
-#### Backend Structure
-```
-backend/
-│
-├── app.py               # Main Flask application
-├── requirements.txt     # Python dependencies
-├── config.py            # Configuration (add your API keys here)
-├── data/
-│   └── products.json    # Sample product catalog
-│
-├── services/
-│   ├── __init__.py
-│   ├── llm_service.py   # Service for LLM interactions (implement this)
-│   └── product_service.py  # Service for product data operations
-│
-└── README.md            # Backend setup instructions
+## 🚀 Getting Started
+
+### 📁 Clone the Repo
+
+```bash
+git clone https://github.com/YOUR_USERNAME/recommendation-system.git
+cd recommendation-system
 ```
 
-#### Frontend Structure
-```
-frontend/
-│
-├── public/
-│   └── index.html
-│
-├── src/
-│   ├── App.js           # Main application component
-│   ├── index.js         # Entry point
-│   ├── components/
-│   │   ├── Catalog.js   # Product catalog display (implement this)
-│   │   ├── UserPreferences.js  # Preference form (implement this)
-│   │   ├── Recommendations.js  # Recommendations display (implement this)
-│   │   └── BrowsingHistory.js  # Browsing history component (implement this)
-│   │
-│   ├── services/
-│   │   └── api.js       # API client for backend communication
-│   │
-│   └── styles/
-│       └── App.css      # Styling
-│
-├── package.json         # NPM dependencies
-└── README.md            # Frontend setup instructions
+---
+
+## ⚙️ Backend Setup (FastAPI)
+
+### 📍 Navigate to the backend folder:
+
+```bash
+cd backend
 ```
 
-### Sample Dataset
+### 📦 Create & activate virtual environment:
 
-We've provided a sample product catalog (`products.json`) that contains 50 products across various categories. Each product has the following structure:
+```bash
+python -m venv venv
+source venv/bin/activate   # or venv\Scripts\activate on Windows
+```
 
-```json
-{
-  "id": "product123",
-  "name": "Ultra-Comfort Running Shoes",
-  "category": "Footwear",
-  "subcategory": "Running",
-  "price": 89.99,
-  "brand": "SportsFlex",
-  "description": "Lightweight running shoes with responsive cushioning and breathable mesh upper.",
-  "features": ["Responsive cushioning", "Breathable mesh", "Durable outsole"],
-  "rating": 4.7,
-  "inventory": 45,
-  "tags": ["running", "athletic", "comfortable", "lightweight"]
+### 📥 Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 🔑 Add your OpenAI API Key
+
+Create a `.env` file or update `config.py` with your OpenAI key:
+
+```python
+config = {
+    "OPENAI_API_KEY": "sk-...your-key...",
+    "MODEL_NAME": "gpt-3.5-turbo",
+    "MAX_TOKENS": 500,
+    "TEMPERATURE": 0.7
 }
 ```
 
-The dataset includes products from categories such as:
-- Electronics (smartphones, laptops, headphones, etc.)
-- Clothing (shirts, pants, dresses, etc.)
-- Home goods (furniture, kitchenware, decor, etc.)
-- Beauty & Personal Care (skincare, makeup, fragrances, etc.)
-- Sports & Outdoors (equipment, apparel, accessories, etc.)
+### ▶️ Start the backend server:
 
-### Key Implementation Guidelines
+```bash
+uvicorn app:app --reload --port 5001
+```
 
-#### LLM Integration
-- You should use OpenAI's API (GPT-3.5-turbo is sufficient) or another LLM API of your choice
-- Implement proper error handling for API calls
-- Use appropriate context windows and token limits
+✅ Your backend will run on: `http://localhost:5001/api`
 
-#### Prompt Engineering
-- Design prompts that effectively leverage product metadata and user preferences
-- Ensure your prompts provide reasoning for recommendations
-- Consider how to handle context limitations for larger product catalogs
+---
 
-#### API Design
-- Create RESTful endpoints with proper request/response formats
-- Implement appropriate error handling
-- Consider performance and optimization
+## 💻 Frontend Setup (React)
 
-#### React Frontend
-- Focus on clean, functional UI rather than elaborate designs
-- Implement responsive components that adapt to different screen sizes
-- Use React state management appropriately (useState, useContext, etc.)
+### 📍 Navigate to frontend folder:
 
-### Stretch Goals (Optional)
+```bash
+cd ../frontend
+```
 
-If you complete the core requirements and want to demonstrate additional skills, consider implementing one or more of these stretch goals:
+### 📥 Install frontend dependencies:
 
-1. Add user authentication and profile persistence
-2. Implement caching for LLM responses to improve performance
-3. Add filtering and sorting options to the product catalog
-4. Create A/B testing for different prompt strategies
-5. Add unit and/or integration tests
+```bash
+npm install
+```
 
-### Evaluation Criteria
+### ▶️ Run the app:
 
-Your submission will be evaluated based on:
+```bash
+npm start
+```
 
-1. **Prompt Engineering Quality (30%)**
-   - Effectiveness of prompts in generating relevant recommendations
-   - Context handling and optimization
-   - Clarity and usefulness of recommendation explanations
+✅ Frontend will open at: `http://localhost:3000`
 
-2. **API Design and Implementation (25%)**
-   - RESTful API design and implementation
-   - Error handling and edge cases
-   - Code organization and structure
+---
 
-3. **Frontend Implementation (25%)**
-   - Component architecture and organization
-   - User experience and interface design
-   - State management and data flow
+## 🧪 How It Works
 
-4. **Code Quality (20%)**
-   - Code readability and documentation
-   - Proper use of version control (commit messages, organization)
-   - Error handling and edge cases
+1. Choose your **price range**, categories, and brands
+2. Click on any product in the catalog to **simulate browsing**
+3. Click "Get Personalized Recommendations"
+4. GPT-3.5 returns 5 suggestions with **explanations + confidence scores**
 
-### Submission Guidelines
+---
 
-1. **GitHub Repository**
-   - Create a **public** GitHub repository with your implementation
-   - Ensure your repository includes:
-     - Complete source code for both frontend and backend
-     - A comprehensive README with setup instructions
-     - Documentation of your approach, especially for prompt engineering
+## 📂 Project Structure
 
-2. **Deployment (Optional)**
-   - If possible, deploy your application (e.g., Vercel, Netlify, Heroku)
-   - Include the deployed URL in your README
+```
+recommendation-system/
+├── backend/
+│   ├── app.py
+│   ├── config.py
+│   ├── requirements.txt
+│   ├── services/
+│   │   ├── llm_service.py
+│   │   └── product_service.py
+│   └── data/
+│       └── products.json
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── services/
+│   │   ├── App.js
+│   │   └── styles/
+│   └── public/
+```
 
-3. **Submission Timeline**
-   - Complete the assignment within 7 days of receiving it
-   - Submit by **replying to the original assessment email** with:
-     - GitHub repository link
-     - Brief overview of your approach (1-2 paragraphs)
-     - Any challenges you faced and how you overcame them
-     - Time spent on the assignment
+---
 
-### Setup Instructions
+## ✅ Key Implementation Highlights
 
-#### Backend Setup
-1. Navigate to the `backend` directory
-2. Create a virtual environment: `python -m venv venv`
-3. Activate the virtual environment:
-   - Windows: `venv\Scripts\activate`
-   - macOS/Linux: `source venv/bin/activate`
-4. Install dependencies: `pip install -r requirements.txt`
-5. Create a `.env` file based on `.env.example` and add your LLM API key
-6. Run the application: `python app.py`
+- Uses **GPT-3.5** for contextual reasoning and natural-language recommendations
+- Efficient **prompt engineering** with price/category filtering
+- Clean RESTful API with proper request/response validation
+- Responsive UI with state-driven architecture
+- Graceful error handling and logging
 
-#### Frontend Setup
-1. Navigate to the `frontend` directory
-2. Install dependencies: `npm install`
-3. Start the development server: `npm start`
-4. The application should open at `http://localhost:3000`
+---
 
-### Notes and Tips
+## 📸 Screenshots
 
-- **API Keys**: Never commit your API keys to GitHub. Use environment variables.
-- **Time Management**: Focus on core functionality first, then enhance if time permits.
-- **Documentation**: Document your approach, especially your prompt engineering strategy.
-- **Code Quality**: Clean, well-organized code is more important than feature quantity.
-- **Questions**: If you have questions, email recruiting@i95dev.com with "Question: AI Intern Take-Home" as the subject.
+| Preferences & History | Recommendations |
+|-----------------------|------------------|
+| (<img width="299" alt="Screenshot 2025-04-08 at 12 18 38 PM" src="https://github.com/user-attachments/assets/75586f73-8967-48ae-a5d7-19ea08a1df58" />
+ |(<img width="684" alt="Screenshot 2025-04-08 at 12 19 13 PM" src="https://github.com/user-attachments/assets/f69994bb-0a98-4bb0-94e0-dd80e44ceec6" />
+|
 
-### Resources
+---
 
-- [OpenAI API Documentation](https://platform.openai.com/docs/api-reference)
-- [Flask Documentation](https://flask.palletsprojects.com/)
-- [React Documentation](https://reactjs.org/docs/getting-started.html)
-- [Prompt Engineering Guide](https://www.promptingguide.ai/)
+## 🧠 Future Improvements
 
-We're excited to see your implementation and approach! Good luck!
+- Add auth + user sessions
+- Integrate real-time analytics on product clicks
+- Use vector embeddings for semantic product similarity
+- UI library like Tailwind or Material UI for better UX
+
+---
+
+## 👩‍💻 Author
+
+Built by Suhani Arora  
+OpenAI API · React · FastAPI · Prompt Engineering
+
+---
+
+## 📄 License
+
+This project is for educational and demonstration purposes. All product data is fictional.
