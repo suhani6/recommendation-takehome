@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './styles/App.css';
 import Catalog from './components/Catalog';
 import UserPreferences from './components/UserPreferences';
 import Recommendations from './components/Recommendations';
 import BrowsingHistory from './components/BrowsingHistory';
 import { fetchProducts, getRecommendations } from './services/api';
+import { AuthContext } from './context/authcontext';
+import Register from './components/Register';
+import Login from './components/Login';
 
 function App() {
+  const { token } = useContext(AuthContext);
+
   const [products, setProducts] = useState([]);
   const [userPreferences, setUserPreferences] = useState({
     priceRange: 'all',
@@ -16,15 +21,15 @@ function App() {
   const [browsingHistory, setBrowsingHistory] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isProductLoading, setIsProductLoading] = useState(true); // new
+  const [isProductLoading, setIsProductLoading] = useState(true);
 
-  // Fetch products
+
   useEffect(() => {
     const loadProducts = async () => {
       try {
         const data = await fetchProducts();
         setProducts(data);
-        console.log('Fetched products:', data); // debug line
+        console.log('Fetched products:', data);
       } catch (error) {
         console.error('Error fetching products:', error);
       } finally {
@@ -34,6 +39,29 @@ function App() {
 
     loadProducts();
   }, []);
+
+  const [showRegister, setShowRegister] = useState(false);
+
+  if (!token) {
+    return (
+      <>
+        {showRegister ? <Register /> : <Login />}
+        <p style={{ textAlign: 'center' }}>
+          {showRegister ? (
+            <>
+              Already have an account?{" "}
+              <button onClick={() => setShowRegister(false)}>Login here</button>
+            </>
+          ) : (
+            <>
+              Don’t have an account?{" "}
+              <button onClick={() => setShowRegister(true)}>Register</button>
+            </>
+          )}
+        </p>
+      </>
+    );
+  }
 
   const handleProductClick = (productId) => {
     if (!browsingHistory.includes(productId)) {
@@ -76,7 +104,7 @@ function App() {
             preferences={userPreferences}
             products={products}
             onPreferencesChange={handlePreferencesChange}
-            isDisabled={isProductLoading} // optional
+            isDisabled={isProductLoading}
           />
 
           <BrowsingHistory
