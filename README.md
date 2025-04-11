@@ -150,6 +150,13 @@ recommendation-system/
 
 ---
 
+## ✅ Stretch Goal Implemented
+
+- login using jwt token
+- <img width="694" alt="Screenshot 2025-04-11 at 12 06 17 PM" src="https://github.com/user-attachments/assets/b030f372-a7a5-4033-93ed-980e86457474" />
+
+  
+
 ## 📸 Screenshots
 
 | Preferences & History | Recommendations |
