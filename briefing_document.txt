@@ -1,0 +1,149 @@
+
+# 🧠 Prompt Engineering Documentation
+
+## 🎯 Objective
+
+Design a prompt that enables OpenAI's GPT-3.5-turbo to act as a smart recommendation engine for an eCommerce app. The goal is to generate **personalized product recommendations** based on:
+- User preferences (category, price range, brand)
+- Simulated browsing history
+- A filtered candidate product list from the catalog
+
+## 🛠️ Approach
+
+### 1. Role Definition (System Prompt)
+We start with a clear system message to define GPT’s role and behavior:
+
+```
+You are an intelligent eCommerce recommendation engine.
+```
+
+This helps steer GPT’s responses toward a structured and domain-specific output.
+
+---
+
+### 2. Input Preparation and Prompt Structure
+
+#### a. User Preferences
+Collected from a form in the frontend and include:
+- `priceRange`: formatted like `"50-150"`
+- `categories`: e.g. `["Electronics", "Footwear"]`
+- `brands`: e.g. `["SoundWave", "SportsFlex"]`
+
+These are passed into the prompt as a formatted JSON block for clarity.
+
+#### b. Browsing History
+Simulated by user clicks, enriched into readable format:
+
+```
+- Ultra-Comfort Running Shoes (Footwear, $89.99, Brand: SportsFlex)
+- Noise-Cancelling Headphones (Electronics, $129.99, Brand: SoundWave)
+```
+
+This gives GPT context on recent interests.
+
+#### c. Candidate Products
+The product catalog is filtered server-side by price range, then truncated to ~20 items to avoid hitting GPT's token limit.
+
+Each product is represented with minimal metadata:
+```
+- ID: p123, Name: Smartwatch X, Category: Electronics, Price: $149.99, Brand: GearZone
+```
+
+---
+
+### 3. Output Instructions
+
+We instruct GPT to return:
+- A **JSON array of exactly 5 product recommendations**
+- Each item includes:
+  - `product_id`
+  - `explanation` (rationale for recommending)
+  - `score` (1–10 confidence score)
+
+Example instruction:
+
+```
+Please recommend 5 products from the candidate list. Return a valid JSON array like:
+[
+  {
+    "product_id": "p456",
+    "explanation": "Matches user interest in SportsFlex footwear.",
+    "score": 9
+  },
+  ...
+]
+```
+
+**Critical instruction:** We explicitly tell the model:
+> "DO NOT include any extra text before or after the JSON."
+
+This ensures the frontend can parse the response cleanly.
+
+---
+
+### 4. Token and Context Management
+
+- Catalog is filtered on price before being passed to GPT
+- We truncate to 20 items max to stay under 4000-token limit
+- `max_tokens` is set to 500 to limit cost and response size
+
+---
+
+## ✅ Benefits of This Design
+
+- ✅ **Low hallucination**: GPT is constrained to a limited candidate list
+- ✅ **Consistent structure**: JSON format ensures easy parsing
+- ✅ **Relevant results**: GPT uses browsing history and preferences to justify picks
+- ✅ **Scalable**: Truncation + filtering supports larger catalogs
+
+---
+
+## 🧪 Sample Prompt (Full)
+
+```
+You are an intelligent eCommerce recommendation engine.
+
+Given the user's preferences and their browsing history, your job is to recommend exactly 5 products from the candidate list below.
+
+Respond ONLY in a valid JSON array. Each recommendation must include:
+- "product_id": string
+- "explanation": string
+- "score": number (confidence score from 1 to 10)
+
+User Preferences:
+{
+  "priceRange": "50-150",
+  "categories": ["Footwear", "Electronics"],
+  "brands": ["SportsFlex", "SoundWave"]
+}
+
+Browsing History:
+- Ultra-Comfort Running Shoes (Footwear, $89.99, Brand: SportsFlex)
+- Noise-Cancelling Headphones (Electronics, $129.99, Brand: SoundWave)
+
+Candidate Products:
+- ID: p123, Name: Smartwatch X, Category: Electronics, Price: $149.99, Brand: GearZone
+- ID: p456, Name: Trail Sneakers, Category: Footwear, Price: $89.99, Brand: SportsFlex
+...
+
+REMEMBER: Choose only from the above product list and follow the JSON format exactly.
+```
+
+---
+
+## 📦 Where Prompt is Constructed
+
+Backend file: `llm_service.py`  
+Function: `_create_recommendation_prompt()`
+
+Prompt is dynamically built using Python with formatted:
+- User preferences
+- Browsed product info
+- Filtered catalog subset
+
+---
+
+## 📄 Conclusion
+
+This approach balances structure and creativity — GPT can reason and explain, but is kept within strict limits for accuracy and consistency. It's scalable, token-safe, and simple to parse.
+
